@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Tag, Post
 from .serializers import TagSerializer, PostSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 
 # create Tag Serializer
@@ -13,5 +14,6 @@ class TagView(viewsets.ModelViewSet):
 
 # create Post Serializer
 class PostView(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    queryset = Post.objects.all().order_by('-created_date')
     serializer_class = PostSerializer
